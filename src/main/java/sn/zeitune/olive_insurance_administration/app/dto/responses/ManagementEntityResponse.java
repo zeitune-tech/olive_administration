@@ -1,4 +1,19 @@
 package sn.zeitune.olive_insurance_administration.app.dto.responses;
 
-public record ManagementEntityResponse() {
+import sn.zeitune.olive_insurance_administration.enums.ManagementEntityType;
+
+import java.util.UUID;
+
+public record ManagementEntityResponse(
+        UUID id,
+        String name,
+        String acronym,
+        String email,
+        String phone,
+        String address,
+        String logo,
+        String fax,
+        String gsm,
+        ManagementEntityType type
+) {
 }

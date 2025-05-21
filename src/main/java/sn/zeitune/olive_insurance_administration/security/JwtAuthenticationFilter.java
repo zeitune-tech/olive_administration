@@ -1,4 +1,4 @@
-package sn.zeitune.oliveinsurancesettings.security;
+package sn.zeitune.olive_insurance_administration.security;
 
 
 import io.jsonwebtoken.Claims;
@@ -17,10 +17,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import sn.zeitune.oliveinsurancesettings.enums.UserRole;
+import sn.zeitune.olive_insurance_administration.enums.UserRole;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 
 @Slf4j
@@ -58,10 +59,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String username = jwtService.extractUsername(token, userType);
             Claims claims = jwtService.extractAllClaims(token, userType);
             List<SimpleGrantedAuthority> authorities = jwtService.extractAuthorities(claims);
-            UserDetails userDetails = User.withUsername(username)
-                    .password("")
-                    .authorities(authorities)
-                    .build();
+
+            UserDetails userDetails;
+            if (userType == UserRole.ADMIN) {
+                userDetails = Admin.builder()
+                        .username(username)
+                        .authorities(authorities)
+                        .build();
+            } else {
+                String managementEntity = claims.get("managementEntity", String.class);
+                userDetails = Employee.builder()
+                        .username(username)
+                        .authorities(authorities)
+                        .managementEntity(UUID.fromString(managementEntity))
+                        .build();
+            }
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authToken);

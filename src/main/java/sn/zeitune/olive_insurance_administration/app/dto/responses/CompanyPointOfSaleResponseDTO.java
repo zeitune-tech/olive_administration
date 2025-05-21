@@ -1,4 +1,23 @@
 package sn.zeitune.olive_insurance_administration.app.dto.responses;
 
-public record CompanyPointOfSaleResponseDTO() {
-}
+import sn.zeitune.olive_insurance_administration.enums.PointOfSaleType;
+
+import java.util.Set;
+import java.util.UUID;
+
+public record CompanyPointOfSaleResponseDTO(
+        UUID id,
+        String name,
+        String acronym,
+        String email,
+        String phone,
+        String address,
+        String logo,
+        String fax,
+        String gsm,
+        PointOfSaleType typePointOfSale,
+        UUID companyUuid,
+        String companyName,
+        Set<UUID> companyLevelOrganizationUuids,
+        Set<String> companyLevelOrganizationNames
+) {}

@@ -7,8 +7,8 @@ import sn.zeitune.olive_insurance_administration.app.dto.responses.CompanyLevelO
 
 import java.util.UUID;
 
-public interface CompanyLevelOrganization {
-    CompanyLevelOrganizationResponseDTO create(CompanyLevelOrganizationRequestDTO dto);
+public interface CompanyLevelOrganizationService {
+    CompanyLevelOrganizationResponseDTO create(CompanyLevelOrganizationRequestDTO dto, UUID companyId);
     CompanyLevelOrganizationResponseDTO update(UUID uuid, CompanyLevelOrganizationRequestDTO dto);
     void delete(UUID uuid);
     CompanyLevelOrganizationResponseDTO getByUuid(UUID uuid);

@@ -1,18 +1,22 @@
-package sn.zeitune.olive_insurance_administration.app.managemententity;
+package sn.zeitune.olive_insurance_administration.app.entities.managemententity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import sn.zeitune.olive_insurance_administration.app.managemententity.pointofsale.BrokerPointOfSale;
-import sn.zeitune.olive_insurance_administration.app.managemententity.pointofsale.CompanyPointOfSale;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import sn.zeitune.olive_insurance_administration.app.entities.managemententity.pointofsale.BrokerPointOfSale;
+import sn.zeitune.olive_insurance_administration.app.entities.managemententity.pointofsale.CompanyPointOfSale;
 import sn.zeitune.olive_insurance_administration.enums.ManagementEntityType;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "compagnies")
 public class Company extends ManagementEntity{
 
@@ -35,19 +39,6 @@ public class Company extends ManagementEntity{
     @Column(name = "num_reg")
     private String registrationNumber;
 
-    protected Company () {
-        super();
-    }
-
-    @Builder
-    public Company(
-            String name, String acronym, String email, String phone, String address, String logo,
-            String fax, String gsm, String legalStatus, String registrationNumber
-    ) {
-        super(name, acronym, email, phone, address, logo, fax, gsm, ManagementEntityType.COMPANY);
-        this.legalStatus = legalStatus;
-        this.registrationNumber = registrationNumber;
-    }
 
     @Override
     public int hashCode() {

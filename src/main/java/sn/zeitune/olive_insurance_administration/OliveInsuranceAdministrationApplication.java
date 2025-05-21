@@ -2,12 +2,14 @@ package sn.zeitune.olive_insurance_administration;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 public class OliveInsuranceAdministrationApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(OliveInsuranceAdministrationApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(OliveInsuranceAdministrationApplication.class, args);
+    }
 
 }

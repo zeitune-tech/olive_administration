@@ -1,4 +1,4 @@
-package sn.zeitune.oliveinsurancesettings.handler;
+package sn.zeitune.olive_insurance_administration.handler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

@@ -1,19 +1,22 @@
-package sn.zeitune.olive_insurance_administration.app.managemententity.pointofsale;
+package sn.zeitune.olive_insurance_administration.app.entities.managemententity.pointofsale;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import sn.zeitune.olive_insurance_administration.app.managemententity.CompanyLevelOrganization;
-import sn.zeitune.olive_insurance_administration.app.managemententity.ManagementEntity;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import sn.zeitune.olive_insurance_administration.app.entities.managemententity.CompanyLevelOrganization;
+import sn.zeitune.olive_insurance_administration.app.entities.managemententity.ManagementEntity;
 import sn.zeitune.olive_insurance_administration.enums.ManagementEntityType;
 import sn.zeitune.olive_insurance_administration.enums.PointOfSaleType;
 
 import java.util.Objects;
 import java.util.Set;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @Entity
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "points_de_vente")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class PointOfSale extends ManagementEntity {
@@ -29,18 +32,6 @@ public abstract class PointOfSale extends ManagementEntity {
     )
     private Set<CompanyLevelOrganization> companyLevelOrganizations;
 
-    protected PointOfSale() {
-        super();
-    }
-
-    public PointOfSale(
-            String name, String acronym, String Email, String phone,
-            String address, String logo, String fax, String gsm,
-            PointOfSaleType typePointOfSale
-    ) {
-        super(name, acronym, Email, phone, address, logo, fax, gsm, ManagementEntityType.POINT_OF_SALE);
-        this.typePointOfSale = typePointOfSale;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -52,6 +43,6 @@ public abstract class PointOfSale extends ManagementEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), super.getId(), typePointOfSale);
+        return Objects.hash(super.getUuid(), super.getId(), typePointOfSale);
     }
 }

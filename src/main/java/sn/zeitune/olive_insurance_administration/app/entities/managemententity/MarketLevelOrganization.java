@@ -1,36 +1,40 @@
-package sn.zeitune.olive_insurance_administration.app.managemententity;
+package sn.zeitune.olive_insurance_administration.app.entities.managemententity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import sn.zeitune.olive_insurance_administration.enums.ManagementEntityType;
 
 import java.util.Objects;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "organisations_niveau_marche")
 public class MarketLevelOrganization extends ManagementEntity {
 
     @OneToMany(mappedBy = "marketLevelOrganization")
     private Set<CompanyMarketLevelOrganizations> companyMarketLevelOrganizations;
 
-    protected MarketLevelOrganization () {
-        super();
-    }
-
-    @Builder
-    public MarketLevelOrganization(
-            String name, String acronym, String email, String phone, String address, String logo,
-            String fax, String gsm, ManagementEntityType type
-    ) {
-        super(name, acronym, email, phone, address, logo, fax, gsm, type);
-    }
     @Override
     public int hashCode() {
-        return Objects.hashCode(super.hashCode()) ^ Objects.hashCode(super.hashCode());
+        return Objects.hash(super.hashCode(), super.getId(), ManagementEntityType.MARKET_LEVEL_ORGANIZATION);
+    }
+
+    @Override
+    public String toString() {
+        return "MarketLevelOrganization{" +
+                "name" + super.getName() +
+                ", acronym" + super.getAcronym() +
+                ", email" + super.getEmail() +
+                ", phone" + super.getPhone() +
+                ", address" + super.getAddress() +
+                '}';
     }
 }

@@ -1,4 +1,4 @@
-package sn.zeitune.olive_insurance_administration.app.managemententity;
+package sn.zeitune.olive_insurance_administration.app.entities.managemententity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sn.zeitune.olive_insurance_administration.app.managemententity.pointofsale.PointOfSale;
+import sn.zeitune.olive_insurance_administration.app.entities.managemententity.pointofsale.PointOfSale;
 
 import java.io.Serializable;
 import java.util.Set;

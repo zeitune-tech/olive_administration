@@ -1,21 +1,21 @@
-package sn.zeitune.olive_insurance_administration.app.managemententity;
+package sn.zeitune.olive_insurance_administration.app.entities.managemententity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import sn.zeitune.olive_insurance_administration.enums.ManagementEntityType;
 
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
 @Entity
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "entites_de_gestion")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class ManagementEntity implements Serializable {
@@ -56,20 +56,6 @@ public abstract class ManagementEntity implements Serializable {
     private ManagementEntityType type;
 
 
-    protected ManagementEntity(
-            String name, String acronym, String email, String phone, String address, String logo,
-            String fax, String gsm, ManagementEntityType type
-    ) {
-        this.name = name;
-        this.acronym = acronym;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.logo = logo;
-        this.fax = fax;
-        this.gsm = gsm;
-        this.type = type;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -83,4 +69,6 @@ public abstract class ManagementEntity implements Serializable {
     public int hashCode() {
         return Objects.hash(uuid);
     }
+
+
 }

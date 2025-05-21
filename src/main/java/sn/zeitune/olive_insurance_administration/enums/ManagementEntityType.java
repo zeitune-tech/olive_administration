@@ -1,4 +1,4 @@
-package sn.zeitune.oliveinsuranceback.app.enums;
+package sn.zeitune.olive_insurance_administration.enums;
 
 public enum ManagementEntityType {
     COMPANY,

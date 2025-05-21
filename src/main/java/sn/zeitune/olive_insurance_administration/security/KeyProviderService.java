@@ -1,9 +1,9 @@
-package sn.zeitune.oliveinsurancesettings.security;
+package sn.zeitune.olive_insurance_administration.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import sn.zeitune.oliveinsurancesettings.enums.UserRole;
+import sn.zeitune.olive_insurance_administration.enums.UserRole;
 
 import java.nio.file.Files;
 import java.security.KeyFactory;
@@ -24,7 +24,7 @@ public class KeyProviderService {
     public PublicKey getPublicKey(UserRole role) throws Exception {
         Resource res = role.equals(UserRole.ADMIN) ? adminPublicRes : publicRes;
 
-        String key = new String(Files.readAllBytes(res.getFile().toPath()));
+        String key = new String(res.getInputStream().readAllBytes());
         key = key.replaceAll("-----BEGIN PUBLIC KEY-----", "")
                 .replaceAll("-----END PUBLIC KEY-----", "")
                 .replaceAll("\\s", "");

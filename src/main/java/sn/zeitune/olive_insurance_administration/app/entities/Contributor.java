@@ -1,15 +1,15 @@
-package sn.zeitune.oliveinsurancesettings.app.entities;
+package sn.zeitune.olive_insurance_administration.app.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import sn.zeitune.oliveinsurancesettings.enums.ContributorType;
+import sn.zeitune.olive_insurance_administration.enums.ContributorType;
 
 import java.util.UUID;
 
 @Data
 @Builder
-@Entity(name = "contributor")
+@Entity(name = "apporteurs")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Contributor {
@@ -38,7 +38,6 @@ public class Contributor {
     private ContributorType type;
 
 
-    private UUID pointOfSale;
     private UUID product;
     private UUID managementEntity;
 }

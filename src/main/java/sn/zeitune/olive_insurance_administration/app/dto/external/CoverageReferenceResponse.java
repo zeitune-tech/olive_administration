@@ -1,4 +1,17 @@
 package sn.zeitune.olive_insurance_administration.app.dto.external;
 
-public record CoverageReferenceResponse() {
-}
+import lombok.Builder;
+
+import java.util.UUID;
+
+@Builder
+public record CoverageReferenceResponse(
+
+        UUID id,
+        String designation,
+        String family,
+        boolean accessCharacteristic,
+        boolean tariffAccess,
+        UUID managementEntity
+) {}
+

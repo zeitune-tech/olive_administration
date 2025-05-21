@@ -1,4 +1,4 @@
-package sn.zeitune.oliveinsurancesettings.enums;
+package sn.zeitune.olive_insurance_administration.enums;
 
 public enum CoverageDurationType {
 }

@@ -1,19 +1,23 @@
-package sn.zeitune.olive_insurance_administration.app.managemententity.pointofsale;
+package sn.zeitune.olive_insurance_administration.app.entities.managemententity.pointofsale;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Builder;
-import lombok.Data;
-import sn.zeitune.olive_insurance_administration.app.managemententity.Company;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import sn.zeitune.olive_insurance_administration.app.entities.managemententity.Company;
 import sn.zeitune.olive_insurance_administration.enums.ManagementEntityType;
 import sn.zeitune.olive_insurance_administration.enums.PointOfSaleType;
 
 import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @Entity
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "points_de_vente_compagnie")
 public class CompanyPointOfSale  extends PointOfSale{
 
@@ -21,19 +25,6 @@ public class CompanyPointOfSale  extends PointOfSale{
     @JoinColumn(name = "code_comp")
     private Company company;
 
-    @Builder
-    public CompanyPointOfSale(
-            String name, String acronym, String email, String phone,
-            String address, String logo, String fax, String gsm,
-            PointOfSaleType type, Company company
-    ) {
-        super(name, acronym, email, phone, address, logo, fax, gsm, type);
-        this.company = company;
-    }
-
-    protected CompanyPointOfSale() {
-        super();
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -45,6 +36,6 @@ public class CompanyPointOfSale  extends PointOfSale{
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), super.getId(), ManagementEntityType.POINT_OF_SALE);
+        return Objects.hash(super.getUuid(), super.getId(), ManagementEntityType.POINT_OF_SALE);
     }
 }

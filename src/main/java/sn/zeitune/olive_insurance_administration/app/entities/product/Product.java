@@ -1,13 +1,11 @@
-package sn.zeitune.olive_insurance_administration.app.entities.insurancelevel.product;
+package sn.zeitune.olive_insurance_administration.app.entities.product;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import sn.zeitune.olive_insurance_administration.app.entities.insurancelevel.Branch;
-import sn.zeitune.olive_insurance_administration.app.entities.managemententity.Company;
+import sn.zeitune.olive_insurance_administration.app.entities.Branch;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.ManagementEntity;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,6 +35,12 @@ public abstract class Product {
         }
     }
 
+    @Column(name = "designation")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "code_bran")
     private Branch branch;
@@ -44,15 +48,6 @@ public abstract class Product {
     @ManyToOne
     @JoinColumn(name = "code_entite")
     private ManagementEntity owner;
-
-    @Builder.Default
-    @ManyToMany
-    @JoinTable(
-            name = "compagnies_public_produits",
-            joinColumns = @JoinColumn(name = "code_produit"),
-            inverseJoinColumns = @JoinColumn(name = "code_comp")
-    )
-    private Set<Company> sharedWithCompanies = new HashSet<>();
 
     @Column(name = "min_risque")
     private Integer minRisk;
@@ -64,4 +59,7 @@ public abstract class Product {
     private Boolean fleet;
     @Column(name = "flag_redu_majo")
     private boolean hasReduction;
+
+    @Column(name = "visibilite", insertable = false, updatable = false)
+    private String visibility;
 }

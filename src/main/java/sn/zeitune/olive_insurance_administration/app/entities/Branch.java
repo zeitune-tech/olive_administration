@@ -1,4 +1,4 @@
-package sn.zeitune.olive_insurance_administration.app.entities.insurancelevel;
+package sn.zeitune.olive_insurance_administration.app.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@SuperBuilder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "branches")

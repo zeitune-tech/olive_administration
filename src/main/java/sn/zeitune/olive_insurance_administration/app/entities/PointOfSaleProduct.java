@@ -2,8 +2,6 @@ package sn.zeitune.olive_insurance_administration.app.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import sn.zeitune.olive_insurance_administration.app.entities.managemententity.Company;
-import sn.zeitune.olive_insurance_administration.app.entities.managemententity.pointofsale.BrokerPointOfSale;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.pointofsale.PointOfSale;
 import sn.zeitune.olive_insurance_administration.app.entities.product.Product;
 
@@ -15,11 +13,11 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "point_de_vente_courtier_produit")
-public class BrokerPointOfSaleProduct {
+@Table(name = "points_de_vente_produits")
+public class PointOfSaleProduct {
 
     @Id
-    @Column(name = "code_pdvc_prod")
+    @Column(name = "code_pdv_prod")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -34,7 +32,7 @@ public class BrokerPointOfSaleProduct {
     }
 
     @ManyToOne
-    @JoinColumn(name = "code_pdvc", referencedColumnName = "code_pdv", nullable = false)
+    @JoinColumn(name = "code_pdvc", referencedColumnName = "code_entite", nullable = false)
     private PointOfSale pointOfSale;
 
     @Column(nullable = false, name = "code_comp")

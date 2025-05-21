@@ -1,7 +1,6 @@
-package sn.zeitune.olive_insurance_administration.app.entities.insurancelevel.product;
+package sn.zeitune.olive_insurance_administration.app.entities.product;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,4 +13,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @DiscriminatorValue("PRIVATE")
 public class PrivateProduct extends Product {
+
 }

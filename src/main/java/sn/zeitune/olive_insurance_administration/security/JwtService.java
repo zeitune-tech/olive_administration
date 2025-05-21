@@ -1,4 +1,4 @@
-package sn.zeitune.oliveinsurancesettings.security;
+package sn.zeitune.olive_insurance_administration.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -7,12 +7,13 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+import sn.zeitune.olive_insurance_administration.enums.UserRole;
 
 import java.security.PublicKey;
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
-
-import sn.zeitune.oliveinsurancesettings.enums.UserRole;
 
 @Service
 @RequiredArgsConstructor
