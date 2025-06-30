@@ -6,7 +6,7 @@ target/
 
 ### application.properties ###
 # Uncomment the following lines to ignore the application.yml file if you do not want to track it in version control.
-src/main/resources/application.yml
+# src/main/resources/application.yml
 
 ### STS ###
 .apt_generated
