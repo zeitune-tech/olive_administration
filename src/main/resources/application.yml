@@ -35,6 +35,7 @@ spring:
                 deregister: ${SPRING_CLOUD_CONSUL_DISCOVERY_DEREGISTER:true}
                 health-check-path: ${SPRING_CLOUD_CONSUL_DISCOVERY_HEALTHCHECKPATH:/api/v1/actuator/health}
                 prefer-ip-address: ${SPRING_CLOUD_CONSUL_DISCOVERY_PREFER_IP_ADDRESS:true}
+                instance-id: ${spring.application.name}:${random.value}
 management:
     endpoints:
         web:
