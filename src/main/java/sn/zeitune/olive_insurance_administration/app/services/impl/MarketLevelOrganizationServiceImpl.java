@@ -99,6 +99,12 @@ public class MarketLevelOrganizationServiceImpl implements MarketLevelOrganizati
     }
 
     @Override
+    public Page<MarketLevelOrganizationResponseDTO> getAll(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(MarketLevelOrganizationMapper::map);
+    }
+
+    @Override
     public Page<MarketLevelOrganizationResponseDTO> search(String name, String email, String acronym, Pageable pageable) {
         return repository
                 .findAll(MarketLevelOrganizationSpecification.withFilters(name, email, acronym), pageable)

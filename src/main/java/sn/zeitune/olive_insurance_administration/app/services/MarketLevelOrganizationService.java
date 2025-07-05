@@ -15,11 +15,14 @@ public interface MarketLevelOrganizationService {
     void delete(UUID uuid);
     MarketLevelOrganizationResponseDTO getByUuid(UUID uuid);
     List<MarketLevelOrganizationResponseDTO> getAll();
+    Page<MarketLevelOrganizationResponseDTO> getAll(Pageable pageable);
+
     Page<MarketLevelOrganizationResponseDTO> search(String name, String email, String acronym, Pageable pageable);
     void assignCompanies(UUID organizationUuid, Set<UUID> companyUuids);
     void removeCompany(UUID orgUuid, UUID companyUuid);
 
     Page<MarketLevelOrganizationResponseDTO> getLinkedMarketLevelOrganizations(UUID managementEntity, Pageable pageable);
+
 
     MarketLevelOrganizationResponseDTO getByName(String poolTransportsPublicsDeVoyageurs);
 }
