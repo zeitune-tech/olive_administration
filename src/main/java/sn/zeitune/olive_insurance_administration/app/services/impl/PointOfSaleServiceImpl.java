@@ -13,12 +13,10 @@ import sn.zeitune.olive_insurance_administration.app.dto.requests.BrokerPointOfS
 import sn.zeitune.olive_insurance_administration.app.dto.requests.CompanyPointOfSaleRequestDTO;
 import sn.zeitune.olive_insurance_administration.app.dto.responses.PointOfSaleResponseDTO;
 import sn.zeitune.olive_insurance_administration.app.dto.responses.SimpleCompanyDTO;
-import sn.zeitune.olive_insurance_administration.app.entities.PointOfSaleProduct;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.Company;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.pointofsale.BrokerPointOfSale;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.pointofsale.CompanyPointOfSale;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.pointofsale.PointOfSale;
-import sn.zeitune.olive_insurance_administration.app.entities.product.Product;
 import sn.zeitune.olive_insurance_administration.app.exceptions.ConflictException;
 import sn.zeitune.olive_insurance_administration.app.exceptions.NotFoundException;
 import sn.zeitune.olive_insurance_administration.app.mappers.PointOfSaleMapper;
@@ -26,7 +24,6 @@ import sn.zeitune.olive_insurance_administration.app.repositories.*;
 import sn.zeitune.olive_insurance_administration.app.services.PointOfSaleService;
 import sn.zeitune.olive_insurance_administration.app.specifications.BrokerPointOfSaleSpecification;
 import sn.zeitune.olive_insurance_administration.app.specifications.CompanyPointOfSaleSpecification;
-import sn.zeitune.olive_insurance_administration.app.specifications.ProductSpecification;
 import sn.zeitune.olive_insurance_administration.enums.ManagementEntityType;
 import sn.zeitune.olive_insurance_administration.enums.PointOfSaleType;
 
@@ -46,8 +43,6 @@ public class PointOfSaleServiceImpl implements PointOfSaleService {
     private final CompanyRepository companyRepository;
     private final UserClient userClient;
 
-    private final PointOfSaleProductRepository pointOfSaleProductRepository;
-    private final ProductRepository productRepository;
 
     @Override
     public PointOfSaleResponseDTO createBrokerPdv(BrokerPointOfSaleRequestDTO dto) {
@@ -102,22 +97,26 @@ public class PointOfSaleServiceImpl implements PointOfSaleService {
                 .company(company)
                 .build();
 
-        PointOfSaleResponseDTO pointOfSaleResponse = PointOfSaleMapper.map(companyRepo.save(pdv));
 
-        Specification<Product> spec = ProductSpecification.ownerEquals(company);
-        List< Product> products = productRepository.findAll(spec);
-        for (Product product : products) {
-            pointOfSaleProductRepository.save(
-                    PointOfSaleProduct.builder()
-                            .company(company.getUuid())
-                            .product(product)
-                            .pointOfSale(pdv)
-                            .build()
-            );
+        return PointOfSaleMapper.map(companyRepo.save(pdv));
+
+    }
+
+    @Override
+    public PointOfSaleResponseDTO update(UUID uuid, CompanyPointOfSaleRequestDTO dto) {
+        PointOfSale pdv = companyRepo.findByUuid(uuid)
+                .orElseThrow(() -> new NotFoundException("Point of Sale not found"));
+
+        if (pdv.getTypePointOfSale() != dto.typePointOfSale()) {
+            throw new ConflictException("Cannot change the type of a point of sale");
         }
 
-        return pointOfSaleResponse;
+        pdv.setName(dto.name());
+        pdv.setEmail(dto.email());
+        pdv.setPhone(dto.phone());
+        pdv.setAddress(dto.address());
 
+        return PointOfSaleMapper.map(pdv);
     }
 
     @Override

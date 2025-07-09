@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import sn.zeitune.olive_insurance_administration.app.dto.requests.CompanyLevelOrganizationRequestDTO;
+import sn.zeitune.olive_insurance_administration.app.dto.requests.CompanyLevelOrganizationUpdateDTO;
 import sn.zeitune.olive_insurance_administration.app.dto.responses.CompanyLevelOrganizationResponseDTO;
 import sn.zeitune.olive_insurance_administration.app.services.CompanyLevelOrganizationService;
 import sn.zeitune.olive_insurance_administration.security.Employee;
@@ -34,7 +35,7 @@ public class CompanyLevelOrganizationController {
     @PutMapping("/{uuid}")
     public ResponseEntity<CompanyLevelOrganizationResponseDTO> update(
             @PathVariable UUID uuid,
-            @Valid @RequestBody CompanyLevelOrganizationRequestDTO dto) {
+            @Valid @RequestBody CompanyLevelOrganizationUpdateDTO dto) {
         return ResponseEntity.ok(service.update(uuid, dto));
     }
 

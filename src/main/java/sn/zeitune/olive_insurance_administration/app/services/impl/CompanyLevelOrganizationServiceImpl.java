@@ -6,7 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sn.zeitune.olive_insurance_administration.app.dto.requests.CompanyLevelOrganizationPointsOfSaleRequestDTO;
 import sn.zeitune.olive_insurance_administration.app.dto.requests.CompanyLevelOrganizationRequestDTO;
+import sn.zeitune.olive_insurance_administration.app.dto.requests.CompanyLevelOrganizationUpdateDTO;
 import sn.zeitune.olive_insurance_administration.app.dto.responses.CompanyLevelOrganizationResponseDTO;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.Company;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.CompanyLevelOrganization;
@@ -52,13 +54,24 @@ public class CompanyLevelOrganizationServiceImpl implements CompanyLevelOrganiza
     }
 
     @Override
-    public CompanyLevelOrganizationResponseDTO update(UUID uuid, CompanyLevelOrganizationRequestDTO dto) {
+    public CompanyLevelOrganizationResponseDTO update(UUID uuid, CompanyLevelOrganizationUpdateDTO dto) {
         CompanyLevelOrganization entity = repository.findByUuid(uuid)
                 .orElseThrow(() -> new NotFoundException("Company-level organization not found"));
 
-        Set<PointOfSale> pointsOfSales = new HashSet<>();
-        // Clear existing points of sale
-        entity.getPointsOfSale().clear();
+        if (dto.name() != null) {
+            entity.setName(dto.name());
+        }
+        entity.setDescription(dto.description());
+
+        return CompanyLevelOrganizationMapper.map(repository.save(entity));
+    }
+
+    @Override
+    public CompanyLevelOrganizationResponseDTO addPointOfSales(UUID uuid, CompanyLevelOrganizationPointsOfSaleRequestDTO dto) {
+        CompanyLevelOrganization entity = repository.findByUuid(uuid)
+                .orElseThrow(() -> new NotFoundException("Company-level organization not found"));
+
+        Set<PointOfSale> pointsOfSales = new HashSet<>(entity.getPointsOfSale());
         if (dto.pointsOfSaleIds() != null) {
             for (UUID pointOfSaleUuid : dto.pointsOfSaleIds()) {
                 PointOfSale pointOfSale = pointOfSaleRepository.findByUuid(pointOfSaleUuid)
@@ -67,8 +80,25 @@ public class CompanyLevelOrganizationServiceImpl implements CompanyLevelOrganiza
             }
         }
 
-        CompanyLevelOrganizationMapper.map(dto, entity.getCompany(), pointsOfSales, entity);
+        entity.setPointsOfSale(pointsOfSales);
+        return CompanyLevelOrganizationMapper.map(repository.save(entity));
+    }
 
+    @Override
+    public CompanyLevelOrganizationResponseDTO deletePointOfSales(UUID uuid, CompanyLevelOrganizationPointsOfSaleRequestDTO dto) {
+        CompanyLevelOrganization entity = repository.findByUuid(uuid)
+                .orElseThrow(() -> new NotFoundException("Company-level organization not found"));
+
+        Set<PointOfSale> pointsOfSales = new HashSet<>(entity.getPointsOfSale());
+        if (dto.pointsOfSaleIds() != null) {
+            for (UUID pointOfSaleUuid : dto.pointsOfSaleIds()) {
+                PointOfSale pointOfSale = pointOfSaleRepository.findByUuid(pointOfSaleUuid)
+                        .orElseThrow(() -> new NotFoundException("Point of sale not found"));
+                pointsOfSales.remove(pointOfSale);
+            }
+        }
+
+        entity.setPointsOfSale(pointsOfSales);
         return CompanyLevelOrganizationMapper.map(repository.save(entity));
     }
 

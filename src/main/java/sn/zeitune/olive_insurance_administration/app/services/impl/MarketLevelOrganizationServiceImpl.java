@@ -8,12 +8,14 @@ import org.springframework.stereotype.Service;
 import sn.zeitune.olive_insurance_administration.app.clients.UserClient;
 import sn.zeitune.olive_insurance_administration.app.dto.external.CreateUserRequest;
 import sn.zeitune.olive_insurance_administration.app.dto.requests.MarketLevelOrganizationRequestDTO;
+import sn.zeitune.olive_insurance_administration.app.dto.responses.CompanyResponseDTO;
 import sn.zeitune.olive_insurance_administration.app.dto.responses.MarketLevelOrganizationResponseDTO;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.Company;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.CompanyMarketLevelOrganizations;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.ManagementEntity;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.MarketLevelOrganization;
 import sn.zeitune.olive_insurance_administration.app.exceptions.NotFoundException;
+import sn.zeitune.olive_insurance_administration.app.mappers.CompanyMapper;
 import sn.zeitune.olive_insurance_administration.app.mappers.MarketLevelOrganizationMapper;
 import sn.zeitune.olive_insurance_administration.app.repositories.CompanyMarketLevelOrganizationRepository;
 import sn.zeitune.olive_insurance_administration.app.repositories.CompanyRepository;
@@ -89,6 +91,17 @@ public class MarketLevelOrganizationServiceImpl implements MarketLevelOrganizati
         return repository.findByUuid(uuid)
                 .map(MarketLevelOrganizationMapper::map)
                 .orElseThrow(() -> new NotFoundException("Market-level org not found"));
+    }
+
+    @Override
+    public List<CompanyResponseDTO> getCompanies(UUID organizationUuid) {
+        MarketLevelOrganization organization = repository.findByUuid(organizationUuid)
+                .orElseThrow(() -> new NotFoundException("Market-level organization not found"));
+
+        return associationRepository.findAllByMarketLevelOrganization(organization).stream()
+                .map(CompanyMarketLevelOrganizations::getCompany)
+                .map(CompanyMapper::map)
+                .toList();
     }
 
     @Override

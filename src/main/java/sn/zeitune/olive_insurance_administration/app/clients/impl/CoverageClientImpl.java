@@ -2,6 +2,7 @@ package sn.zeitune.olive_insurance_administration.app.clients.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import sn.zeitune.olive_insurance_administration.app.clients.CoverageClient;
@@ -16,10 +17,13 @@ import java.util.UUID;
 @Transactional
 public class CoverageClientImpl implements CoverageClient {
 
+    @Value(" ${services.olive-insurance-settings-service}")
+    private String settingsServiceUrl;
+
     private final WebClient userWebClient;
 
     public CoverageClientImpl(WebClient.Builder webClientBuilder) {
-        this.userWebClient = webClientBuilder.baseUrl("http://localhost:8030/api/v1").build();
+        this.userWebClient = webClientBuilder.baseUrl(settingsServiceUrl).build();
     }
 
     @Override

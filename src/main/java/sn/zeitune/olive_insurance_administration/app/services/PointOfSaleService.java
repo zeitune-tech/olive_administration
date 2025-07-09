@@ -15,6 +15,8 @@ import java.util.UUID;
 public interface PointOfSaleService {
     PointOfSaleResponseDTO createBrokerPdv(BrokerPointOfSaleRequestDTO dto);
     PointOfSaleResponseDTO createCompanyPdv(CompanyPointOfSaleRequestDTO dto, UUID managementEntity);
+
+    PointOfSaleResponseDTO update(UUID uuid, CompanyPointOfSaleRequestDTO dto);
     PointOfSaleResponseDTO getByUuid(UUID uuid);
     List<PointOfSaleResponseDTO> getAll();
     Page<PointOfSaleResponseDTO> search(String name, PointOfSaleType type, Pageable pageable);

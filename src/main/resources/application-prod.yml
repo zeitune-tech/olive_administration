@@ -4,16 +4,16 @@ server:
         context-path: /api/v1/
 
 services:
-    olive-insurance-auth-service: http://localhost:8010/api/v1/
+    olive-insurance-auth-service: http://172.31.36.133:8010/api/v1/
     olive-insurance-settings-service: http://localhost:8030/api/v1/
 
 spring:
     application:
         name: olive_insurance_administration_service
     datasource:
-        url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/olive_administration}
-        username: ${SPRING_DATASOURCE_USERNAME:lhacksrt}
-        password: ${SPRING_DATASOURCE_PASSWORD:lhacksrt}
+        url: jdbc:postgresql://localhost:5432/${ADMINISTRATION_DB_NAME}
+        username: ${ADMINISTRATION_DB_USER}
+        password: ${ADMINISTRATION_DB_PASSWORD}
 
     jpa:
         hibernate:
@@ -33,6 +33,7 @@ spring:
                 deregister: ${SPRING_CLOUD_CONSUL_DISCOVERY_DEREGISTER:true}
                 health-check-path: ${SPRING_CLOUD_CONSUL_DISCOVERY_HEALTHCHECKPATH:/api/v1/actuator/health}
                 prefer-ip-address: ${SPRING_CLOUD_CONSUL_DISCOVERY_PREFER_IP_ADDRESS:true}
+
 management:
     endpoints:
         web:
@@ -52,4 +53,4 @@ jwt:
 
     admin:
         public-key: classpath:keys/public-admin.pem
-        expiration: 300000 # 5 min604800000}
+        expiration: 300000 # 5 min
