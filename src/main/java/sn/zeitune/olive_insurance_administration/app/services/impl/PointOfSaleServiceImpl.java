@@ -19,6 +19,7 @@ import sn.zeitune.olive_insurance_administration.app.entities.managemententity.p
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.pointofsale.PointOfSale;
 import sn.zeitune.olive_insurance_administration.app.exceptions.ConflictException;
 import sn.zeitune.olive_insurance_administration.app.exceptions.NotFoundException;
+import sn.zeitune.olive_insurance_administration.app.mappers.BrokerPointOfSaleMapper;
 import sn.zeitune.olive_insurance_administration.app.mappers.PointOfSaleMapper;
 import sn.zeitune.olive_insurance_administration.app.repositories.*;
 import sn.zeitune.olive_insurance_administration.app.services.PointOfSaleService;
@@ -133,6 +134,12 @@ public class PointOfSaleServiceImpl implements PointOfSaleService {
         List<PointOfSaleResponseDTO> companies = companyRepo.findAll().stream()
                 .map(PointOfSaleMapper::map).toList();
         return Stream.concat(brokers.stream(), companies.stream()).toList();
+    }
+
+    @Override
+    public Page<PointOfSaleResponseDTO> getAll(Pageable pageable) {
+        return brokerRepo.findAll(pageable)
+                .map(PointOfSaleMapper::map);
     }
 
     @Override
