@@ -8,132 +8,75 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:15
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: dev_administration_user
-          POSTGRES_PASSWORD: XqLJqqAsznWJa6JaLxcnvQ==
-          POSTGRES_DB: dev_administration_db
-        options: >-
-          --health-cmd="pg_isready -U dev_administration_user"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.2.0
+        uses: actions/checkout@v4
 
-      - name: "Set up archived Oracle JDK 21.0.4"
+      - name: Set up JDK 21
         uses: oracle-actions/setup-java@v1
         with:
           website: oracle.com
           release: 21
           version: 21.0.4
 
-      - name: Set secrets as environment variables
-        run: |
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
-          echo "JWT_EXPIRATION=${{ secrets.JWT_EXPIRATION }}" >> $GITHUB_ENV
-          echo "JWT_REFRESH_EXPIRATION=${{ secrets.JWT_REFRESH_EXPIRATION }}" >> $GITHUB_ENV
-          echo "APP_PORT=${{ secrets.APP_PORT }}" >> $GITHUB_ENV
+      - name: Build application (skip tests)
+        run: mvn clean package -DskipTests
 
-      - name: Set DB environment variables
-        run: |
-          echo "SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/dev_administration_db" >> $GITHUB_ENV
-          echo "SPRING_DATASOURCE_USERNAME=dev_administration_user" >> $GITHUB_ENV
-          echo "SPRING_DATASOURCE_PASSWORD=XqLJqqAsznWJa6JaLxcnvQ==" >> $GITHUB_ENV
-          echo "SPRING_PROFILES_ACTIVE=dev" >> $GITHUB_ENV
-
-      - name: Build with Maven (dev profile)
-        run: mvn -B package --file pom.xml -Dspring.profiles.active=dev
-
-      - name: Show the content of the target directory
-        run: ls -l target
-
-      - name: Save JAR file as an artifact
+      - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
           name: app_artifact
           path: target/*.jar
 
   deploy:
-    needs: [build]
-    if: ${{ github.ref == 'refs/heads/laminef-deploy-dev-14/07/2025' }}
+    needs: build
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    if: ${{ github.ref == 'refs/heads/laminef-deploy-dev-14/07/2025' }}
 
+    steps:
       - name: Download JAR artifact
         uses: actions/download-artifact@v4
         with:
           name: app_artifact
 
-      - name: Set up SSH key
+      - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Add SSH key to known hosts
+      - name: Add server to known_hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -p ${{ secrets.SERVER_PORT }} ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy to server
+      - name: Upload JAR to server
         run: |
-          scp -P ${{ secrets.SERVER_PORT }} *.jar ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/olive_dev/microservices/administration-service/
+          scp -P ${{ secrets.SERVER_PORT }} *.jar ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/olive_dev_docker/microservices/olive_administration/
 
-      - name: Execute deployment script
+      - name: Run deploy script on server
         run: |
           ssh -p ${{ secrets.SERVER_PORT }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
-          ~/bin/deploy-service.sh administration-service /var/www/olive_dev/microservices/administration-service"
+            ~/bin/deploy-service.sh administration-service /var/www/olive_dev_docker/microservices/olive_administration
+          "
 
   restart:
-    needs: [deploy]
-    if: ${{ github.ref == 'refs/heads/laminef-deploy-dev-14/07/2025' }}
+    needs: deploy
     runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/laminef-deploy-dev-14/07/2025' }}
+
     steps:
-      - name: Set up SSH key
+      - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Add SSH key to known hosts
+      - name: Add server to known_hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -p ${{ secrets.SERVER_PORT }} ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Restart administration-service via systemd
+      - name: Restart service
         run: |
-          ssh -p ${{ secrets.SERVER_PORT }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
-          echo '=== Restarting administration-service via systemd ==='
-          
-          # Arrêter le service
-          echo 'Stopping dev.administration.service...'
-          sudo systemctl stop dev.administration.service || true
-          
-          # Recharger la configuration
-          echo 'Reloading systemd daemon...'
-          sudo systemctl daemon-reload
-          
-          # Démarrer le service
-          echo 'Starting dev.administration.service...'
-          sudo systemctl start dev.administration.service
-          
-          # Attendre le démarrage
-          sleep 10
-          
-          # Vérifier le statut
-          echo 'Service status:'
-          sudo systemctl status dev.administration.service --no-pager --lines=0
-          
-          # Afficher les logs récents
-          echo 'Recent logs:'
-          sudo journalctl -u dev.administration.service --no-pager -n 15 --since '2 minutes ago'
-          
-          echo '=== Restart completed ==='
-          "
+          ssh -p ${{ secrets.SERVER_PORT }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} <<EOF
+          EOF
