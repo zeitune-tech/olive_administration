@@ -9,7 +9,7 @@ services:
 
 spring:
     application:
-        name: dev_olive_insurance_administration_service
+        name: dev-olive-insurance-administration-service
     datasource:
         url: ${OLIVE_DEV_ADMINISTRATION_SPRING_DATASOURCE_URL}
         username: ${OLIVE_DEV_ADMINISTRATION_SPRING_DATASOURCE_USERNAME}
