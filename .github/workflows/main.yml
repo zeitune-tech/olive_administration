@@ -52,12 +52,12 @@ jobs:
 
       - name: Upload JAR to server
         run: |
-          scp -P ${{ secrets.SERVER_PORT }} *.jar ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/olive_dev_docker/microservices/olive_administration/
+          scp -P ${{ secrets.SERVER_PORT }} *.jar ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/dev_olive_services/dev_olive_administration/
 
       - name: Run deploy script on server
         run: |
           ssh -p ${{ secrets.SERVER_PORT }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
-            ~/bin/deploy-service.sh administration-service /var/www/olive_dev_docker/microservices/olive_administration
+            ~/bin/deploy-service.sh administration-service /var/www/dev_olive_services/dev_olive_administration
           "
 
   restart:
