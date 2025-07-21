@@ -10,7 +10,7 @@ WORKDIR /app
 COPY target/*.jar app.jar
 
 # Étape 4 : Exposer le port utilisé par Spring Boot
-EXPOSE 8120
+EXPOSE 8220
 
 # Étape 5 : Démarrer l’application
 ENTRYPOINT ["java", "-jar", "app.jar"]
