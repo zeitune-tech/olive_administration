@@ -16,14 +16,10 @@ import sn.zeitune.olive_insurance_administration.app.dto.external.CreateUserRequ
 @Slf4j
 public class UserClientImpl implements UserClient {
 
-
     private final WebClient userWebClient;
 
-    public UserClientImpl(
-            WebClient.Builder webClientBuilder,
-            @Value("${services.olive-insurance-auth-service}") String authServiceUrl
-    ) {
-        this.userWebClient = webClientBuilder.baseUrl(authServiceUrl).build();
+    public UserClientImpl(WebClient.Builder webClientBuilder, @Value("${services.olive-insurance-auth-service}") String baseUrl) {
+        this.userWebClient = webClientBuilder.baseUrl(baseUrl).build();
     }
 
     @Override

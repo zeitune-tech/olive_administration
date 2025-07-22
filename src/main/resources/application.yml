@@ -4,13 +4,8 @@ server:
         context-path: /api/v1/
 
 services:
-<<<<<<< HEAD
-    olive-insurance-auth-service: ${OLIVE_AUTH_SERVICE_URL}
-    olive-insurance-settings-service: ${OLIVE_SETTINGS_SERVICE_URL}
-=======
     olive-insurance-auth-service: http://localhost:8010/api/v1/
     olive-insurance-settings-service: http://localhost:8030/api/v1/
->>>>>>> main
 
 spring:
     application:
