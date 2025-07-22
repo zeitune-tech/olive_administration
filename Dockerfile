@@ -1,3 +1,5 @@
+# Use Ubuntu 22.04 as the base image
+
 # Étape 1 : Utiliser Oracle JDK 21
 FROM container-registry.oracle.com/java/openjdk:21
 
@@ -8,7 +10,7 @@ WORKDIR /app
 COPY target/*.jar app.jar
 
 # Étape 4 : Exposer le port utilisé par Spring Boot
-EXPOSE 8020
+EXPOSE 8120
 
 # Étape 5 : Démarrer l’application
 ENTRYPOINT ["java", "-jar", "app.jar"]

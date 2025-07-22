@@ -17,13 +17,10 @@ import java.util.UUID;
 @Transactional
 public class CoverageClientImpl implements CoverageClient {
 
-    @Value(" ${services.olive-insurance-settings-service}")
-    private String settingsServiceUrl;
-
     private final WebClient userWebClient;
 
-    public CoverageClientImpl(WebClient.Builder webClientBuilder) {
-        this.userWebClient = webClientBuilder.baseUrl(settingsServiceUrl).build();
+    public CoverageClientImpl(WebClient.Builder webClientBuilder, @Value("${services.olive-insurance-settings-service}") String baseUrl) {
+        this.userWebClient = webClientBuilder.baseUrl(baseUrl).build();
     }
 
     @Override

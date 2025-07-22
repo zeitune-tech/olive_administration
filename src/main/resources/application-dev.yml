@@ -4,18 +4,16 @@ server:
         context-path: /api/v1/
 
 services:
-    olive-insurance-auth-service:
-        base-url: http://localhost:8110/api/v1/
-    olive-insurance-settings-service:
-        base-url: http://localhost:8130/api/v1/
+    olive-insurance-auth-service: ${OLIVE_DEV_AUTH_SERVICE_URL}
+    olive-insurance-settings-service: ${OLIVE_DEV_SETTINGS_SERVICE_URL}
 
 spring:
     application:
-        name: olive_insurance_administration_service
-    # datasource:
-    #     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/olive_administration}
-    #     username: ${SPRING_DATASOURCE_USERNAME:lhacksrt}
-    #     password: ${SPRING_DATASOURCE_PASSWORD:lhacksrt}
+        name: dev_olive_insurance_administration_service
+    datasource:
+        url: ${OLIVE_DEV_ADMINISTRATION_SPRING_DATASOURCE_URL}
+        username: ${OLIVE_DEV_ADMINISTRATION_SPRING_DATASOURCE_USERNAME}
+        password: ${OLIVE_DEV_ADMINISTRATION_SPRING_DATASOURCE_PASSWORD}
 
     jpa:
         hibernate:
