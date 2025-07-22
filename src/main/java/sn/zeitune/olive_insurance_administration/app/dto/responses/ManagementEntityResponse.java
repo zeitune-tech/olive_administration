@@ -1,9 +1,11 @@
 package sn.zeitune.olive_insurance_administration.app.dto.responses;
 
+import lombok.Builder;
 import sn.zeitune.olive_insurance_administration.enums.ManagementEntityType;
 
 import java.util.UUID;
 
+@Builder
 public record ManagementEntityResponse(
         UUID id,
         String name,
@@ -14,6 +16,7 @@ public record ManagementEntityResponse(
         String logo,
         String fax,
         String gsm,
-        ManagementEntityType type
+        ManagementEntityType type,
+        ManagementEntityResponse superiorEntity
 ) {
 }

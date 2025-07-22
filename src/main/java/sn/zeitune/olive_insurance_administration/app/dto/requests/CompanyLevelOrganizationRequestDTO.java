@@ -9,5 +9,6 @@ import java.util.UUID;
 public record CompanyLevelOrganizationRequestDTO(
         @NotBlank String name,
         String description,
-        @NotNull Set<UUID> pointsOfSaleIds
+
+        Set<UUID> pointsOfSaleIds
 ) {}

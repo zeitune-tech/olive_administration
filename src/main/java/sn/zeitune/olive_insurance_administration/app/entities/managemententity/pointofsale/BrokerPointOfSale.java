@@ -6,7 +6,6 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.Company;
-import sn.zeitune.olive_insurance_administration.app.entities.product.Product;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -23,11 +22,6 @@ public class BrokerPointOfSale extends PointOfSale{
 
     @ManyToMany(mappedBy = "brokerPointOfSales")
     private Set<Company> companies = new HashSet<>();
-
-    @ManyToMany
-    @Builder.Default
-    private Set<Product> products = new HashSet<>();
-
 
     @Override
     public int hashCode() {

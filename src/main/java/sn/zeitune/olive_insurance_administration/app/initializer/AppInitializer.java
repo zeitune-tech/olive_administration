@@ -21,11 +21,7 @@ public class AppInitializer implements CommandLineRunner {
 
     private final CompanyService companyService;
     private final MarketLevelOrganizationService marketLevelOrganizationService;
-    private final BranchService branchService;
-    private final CategoryService categoryService;
-    private final ProductService productService;
     private final PointOfSaleService pointOfSaleService;
-    private final CoverageClient coverageClient;
 
 
     @Override
@@ -125,85 +121,5 @@ public class AppInitializer implements CommandLineRunner {
             // Handle exception
             System.err.println("Error during initialization: " + e.getMessage());
         }
-
-
-        try {
-
-            CategoryResponseDTO assRep = categoryService.create(new CategoryRequestDTO(
-                    "Assurance par répartition",
-                    "Assurance par répartition"
-            ));
-
-            branchService.create(new BranchRequestDTO(
-                    "Automobile",
-                    "Assurance automobile",
-                    assRep.id()
-            ));
-
-
-        } catch (Exception e) {
-            // Handle exception
-            System.err.println("Error during initialization: " + e.getMessage());
-        }
-
-        try {
-            // init coverages
-            CompanyResponseDTO amsa = companyService.getByName("AMSA Assurances");
-            MarketLevelOrganizationResponseDTO poolTPV = marketLevelOrganizationService.getByName("Pool Transports Publics de Voyageurs");
-            List<CoverageReferenceResponse> amsaCoverages = coverageClient.initCoverageReferences(
-                    amsa.id()
-            );
-            List<CoverageReferenceResponse> poolTPVCoverages = coverageClient.initCoverageReferences(
-                    poolTPV.id()
-            );
-
-            BranchResponseDTO branchTPV = branchService.getByName("Automobile");
-
-            ProductRequestDTO amsaProduct = ProductRequestDTO.builder()
-                    .name("AAP")
-                    .description("Assurance automobile pour particulier")
-                    .branch(branchTPV.id())
-                    .fleet(false)
-                    .hasReduction(false)
-                    .minRisk(1)
-                    .maxRisk(1)
-                    .canBeRepartitioned(false)
-                    .coverages(
-                            amsaCoverages.stream()
-                                    .map(CoverageReferenceResponse::id)
-                                    .collect(Collectors.toSet())
-                    )
-                    .build();
-            productService.createProduct(
-                    amsaProduct,
-                    amsa.id()
-            );
-
-            ProductRequestDTO poolTPVProduct = ProductRequestDTO.builder()
-                    .name("TPV")
-                    .description("Transport Public de Voyageurs")
-                    .branch(branchTPV.id())
-                    .fleet(false)
-                    .hasReduction(false)
-                    .minRisk(1)
-                    .maxRisk(1)
-                    .canBeRepartitioned(false)
-                    .coverages(
-                            poolTPVCoverages.stream()
-                                    .map(CoverageReferenceResponse::id)
-                                    .collect(Collectors.toSet())
-                    )
-                    .build();
-
-            productService.createProduct(
-                    poolTPVProduct,
-                    poolTPV.id()
-            );
-
-        } catch (Exception e) {
-            // Handle exception
-            System.err.println("Error during initialization: " + e.getMessage());
-        }
-
     }
 }
