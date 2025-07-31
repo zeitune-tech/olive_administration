@@ -1,19 +1,25 @@
 package sn.zeitune.olive_insurance_administration.app.entities;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import sn.zeitune.olive_insurance_administration.app.entities.managemententity.ManagementEntity;
 
 import java.util.UUID;
 
 @Getter
 @Setter
-@Builder
-@Entity(name = "apporteurs")
+@Entity
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Contributor extends Intermediate {
+@Table(name = "type_apporteurs")
+public class ContributorType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +30,7 @@ public class Contributor extends Intermediate {
     @Column(name = "uuid", updatable = false, nullable = false, unique = true)
     private UUID uuid;
 
+
     @PrePersist
     public void generateUuid() {
         if (this.uuid == null) {
@@ -31,23 +38,9 @@ public class Contributor extends Intermediate {
         }
     }
 
-    @Column(name = "prenom", nullable = false)
-    private String firstname;
-
-    @Column(name = "nom", nullable = false)
-    private String lastname;
-
-    @Column(name = "tel", nullable = false)
-    private String phone;
-
-    @Column(name = "email", nullable = false)
-    private String email;
+    @Column(name = "libelle")
+    private String label;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "type_apporteur", nullable = false)
-    private ContributorType contributorType;
-
-    @ManyToOne
-    @JoinColumn(name = "entite_de_gestion", nullable = false)
     private ManagementEntity managementEntity;
 }

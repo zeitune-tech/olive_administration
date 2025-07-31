@@ -8,8 +8,11 @@ import java.util.UUID;
 
 @Builder
 public record ContributorResponse(
-        UUID uuid,
-        String designation,
-        ContributorType type,
+        UUID id,
+        String firstname,
+        String lastname,
+        String email,
+        String phone,
+        ContributorTypeResponse contributorType,
         UUID managementEntityId
 ) {}

@@ -11,12 +11,12 @@ import java.util.UUID;
 @Builder
 public record ContributorRequest(
 
-        @NotBlank(message = "Designation must not be blank")
-        String designation,
+        String firstname,
+        String lastname,
 
-        @NotNull(message = "Contributor type must not be null")
-        ContributorType type,
+        String email,
 
-        @NotNull(message = "Management entity ID must not be null")
-        UUID managementEntityId
+        String phone,
+
+        UUID contributorTypeId
 ) {}
