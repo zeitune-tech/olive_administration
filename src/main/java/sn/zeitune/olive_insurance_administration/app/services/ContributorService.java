@@ -9,6 +9,8 @@ import java.util.UUID;
 public interface ContributorService {
     ContributorResponse create(ContributorRequest request, UUID managementEntity);
 
+    ContributorResponse update(UUID uuid, ContributorRequest request);
+
     ContributorResponse getByUuid(UUID uuid);
     List<ContributorResponse> getAll();
     void delete(UUID uuid);

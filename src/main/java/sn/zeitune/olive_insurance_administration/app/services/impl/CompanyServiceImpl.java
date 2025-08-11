@@ -104,6 +104,13 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public Page<CompanyResponseDTO> getAllCompanies(Pageable pageable) {
+        return companyRepository
+                .findAll(pageable)
+                .map(CompanyMapper::map);
+    }
+
+    @Override
     public Page<CompanyResponseDTO> getAllLinkedCompanies(UUID managementEntity, Pageable pageable) {
         ManagementEntity entity = managementEntityRepository.findByUuid(managementEntity)
                 .orElseThrow(() -> new NotFoundException("Management entity not found"));

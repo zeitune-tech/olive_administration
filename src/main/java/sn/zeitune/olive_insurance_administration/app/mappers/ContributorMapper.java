@@ -8,18 +8,15 @@ public class ContributorMapper {
 
     public static Contributor map(ContributorRequest request) {
         return Contributor.builder()
-                .designation(request.designation())
-                .type(request.type())
-                .managementEntity(request.managementEntityId())
+
+                //.type(request.type())
                 .build();
     }
 
     public static ContributorResponse map(Contributor contributor) {
         return ContributorResponse.builder()
                 .uuid(contributor.getUuid())
-                .designation(contributor.getDesignation())
-                .type(contributor.getType())
-                .managementEntityId(contributor.getManagementEntity())
+                //.type(contributor.getType())
                 .build();
     }
 }

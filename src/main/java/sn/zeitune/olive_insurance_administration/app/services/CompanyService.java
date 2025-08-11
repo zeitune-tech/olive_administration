@@ -20,5 +20,7 @@ public interface CompanyService {
 
     CompanyResponseDTO getByName(String name);
 
+    Page<CompanyResponseDTO> getAllCompanies(Pageable pageable);
+
     Page<CompanyResponseDTO> getAllLinkedCompanies(UUID managementEntity, Pageable pageable);
 }
